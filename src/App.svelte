@@ -3,6 +3,7 @@
   export let name
   export let message
 
+
   let serverDate = null
   onMount(async () => {
     let data = await (await fetch('/api')).json()
@@ -10,7 +11,22 @@
     console.log('MESSAGE: ', message)
     let dateData = await(await fetch('/api/date')).json()
     serverDate = dateData.date
+    fetchClicks()
   })
+
+  let count = 0;
+  async function handleClick() {
+    console.log("Calling fn")
+    const data = await (await fetch('/api/clicks', {
+      method: 'POST'
+    })).json()
+    count = data.clicks
+  }
+
+  async function fetchClicks() {
+    const data = await ( await (fetch('api/clicks'))).json()
+    count = data.clicks
+  }
 </script>
 
 <main>
@@ -18,6 +34,10 @@
   <h2>{message}</h2>
   <h2>{serverDate}</h2>
   <h3>Test the CI process. Make a manual change.</h3>
+  <button on:click={handleClick}>Incr</button>
+  <div>
+  {count}
+  </div>
   <p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
 </main>
 

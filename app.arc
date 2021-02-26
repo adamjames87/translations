@@ -6,6 +6,8 @@ begin-app
 @http
 get /api
 get /api/date
+get /api/clicks
+post /api/clicks
 
 @tables
 data
